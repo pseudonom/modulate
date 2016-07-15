@@ -29,4 +29,4 @@ getSubModules srcDir baseModule =
 
 importModule :: Text -> Text -> Text
 importModule baseModule subModule =
-  "import " <> baseModule <> "." <> subModule
+  "import " <> baseModule <> "." <> subModule <> " as Export"
