@@ -21,7 +21,7 @@ process src content =
 
 pluckBaseModule :: Text -> Either Text Text
 pluckBaseModule line =
-   maybe (Left line) Right $ (Text.stripPrefix "import " <=< Text.stripSuffix ".") line
+   maybe (Left line) Right $ (Text.stripPrefix "import " <=< Text.stripSuffix ".*") line
 
 getSubModules :: FilePath -> Text -> IO [Text]
 getSubModules srcDir baseModule =

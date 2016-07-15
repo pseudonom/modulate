@@ -2,7 +2,7 @@
 
 module Lib where
 
-import Lib.
+import Lib.*
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
