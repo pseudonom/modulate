@@ -1,6 +1,7 @@
 module Module.Import.Preprocess where
 
 import Control.Monad
+import qualified Data.Char as Char
 import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
@@ -25,7 +26,16 @@ pluckBaseModule line =
 
 getSubModules :: FilePath -> Text -> IO [Text]
 getSubModules srcDir baseModule =
-  mapMaybe ((".hs" `Text.stripSuffix`) . Text.pack) <$> getDirectoryContents (srcDir </> Text.unpack baseModule)
+  mapMaybe ((".hs" `Text.stripSuffix`) . Text.pack) <$> getDirectoryContents (getRoot srcDir </> pathify baseModule)
+
+
+-- | This uses the gross heuristic that upper cases letters are the start of your module hierarchy
+-- e.g. In @src/foo/Bar/Baz.hs@, the module is @Bar.Baz@
+getRoot :: FilePath -> FilePath
+getRoot = joinPath . takeWhile (not . Char.isUpper . head)  . splitPath
+
+pathify :: Text -> String
+pathify = foldr1 (</>) . map Text.unpack . Text.splitOn "."
 
 importModule :: Text -> Text -> Text
 importModule baseModule subModule =
